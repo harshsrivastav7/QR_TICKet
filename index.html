@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Ticket System</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🎫 Ticket Dashboard</h1>
+  <div class="container">
+    <h1>🎟 QR Ticket System</h1>
 
-  <div class="ticket-form-container">
+    <!-- Ticket Form -->
     <form id="ticketForm" class="ticket-form">
       <input type="text" id="name" placeholder="Name" required />
       <input type="text" id="referenceBy" placeholder="Reference By" required />
@@ -17,10 +18,12 @@
       <button type="submit">Generate Ticket</button>
     </form>
 
+    <!-- Error Message -->
     <p id="error" class="error"></p>
 
+    <!-- Ticket Result -->
     <div id="ticketResult" class="ticket-result" style="display:none;">
-      <h3>Ticket Generated ✅</h3>
+      <h2>✅ Ticket Generated</h2>
       <p id="ticketName"></p>
       <p id="ticketReference"></p>
       <p id="ticketPhone"></p>
@@ -31,62 +34,6 @@
 
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-
-  <script>
-    const form = document.getElementById('ticketForm');
-    const errorEl = document.getElementById('error');
-    const resultEl = document.getElementById('ticketResult');
-    const nameEl = document.getElementById('ticketName');
-    const referenceEl = document.getElementById('ticketReference');
-    const phoneEl = document.getElementById('ticketPhone');
-    const codeEl = document.getElementById('ticketCode');
-    const qrEl = document.getElementById('qrcode');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorEl.textContent = '';
-      resultEl.style.display = 'none';
-
-      const name = document.getElementById('name').value.trim();
-      const referenceBy = document.getElementById('referenceBy').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-
-      if (!name || !referenceBy || !phone) {
-        errorEl.textContent = 'All fields are required';
-        return;
-      }
-
-      try {
-        const res = await fetch('http://localhost:8080/tickets', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ Name: name, ReferenceBy: referenceBy, phone })
-        });
-
-        if (!res.ok) throw new Error('Server error');
-
-        const data = await res.json();
-
-        nameEl.textContent = "Name: " + data.Name;
-        referenceEl.textContent = "Reference By: " + data.ReferenceBy;
-        phoneEl.textContent = "Phone: " + data.phone;
-        codeEl.textContent = "Ticket Code: " + data.ticketCode;
-
-        new QRious({
-          element: qrEl,
-          value: data.ticketCode,
-          size: 200
-        });
-
-        resultEl.style.display = 'block';
-        form.reset();
-      } catch (err) {
-        console.error(err);
-        errorEl.textContent = 'Error generating ticket';
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
