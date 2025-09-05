@@ -18,7 +18,7 @@ const auth = new google.auth.GoogleAuth({
 });
 
 const sheets = google.sheets({ version: "v4", auth });
-const SPREADSHEET_ID = "1kdb7UOlQSO2Zwpfr2GJOC78hQ-DJqfRC7kiMg8OxAJM";
+const SPREADSHEET_ID = "17jY3Sj8oaj8k2zqubwj8t61YbQXzLzZkKC1yYjEueTM";
 
 // Generate unique ticket code
 const generateTicketCode = () => {
